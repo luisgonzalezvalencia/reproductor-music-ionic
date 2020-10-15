@@ -26,5 +26,6 @@ jobs:
         cordova-version: 8
 
     - name: Build
+      working-directory: ./AppMobile
       run: |
         ionic cordova build android --debug
