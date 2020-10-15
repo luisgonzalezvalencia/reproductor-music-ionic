@@ -5,12 +5,9 @@ name: CI-AppMobile
 
 on:
   push:
-    branches: 
-      - master
-      - appmobile
-      - AppMobile
+    branches: [ master, AppMobile]
   pull_request:
-    branches: [AppMobile]
+    branches: [ master, AppMobile]
 
 jobs:
   build:
@@ -19,19 +16,16 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 12.x, 14.x]
+        node-version: [ 12.x]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
     - name: Use coturiv/setup-ionic
       uses: coturiv/setup-ionic@v1.0.3
       with:
-        cordova-version: 8
+        cordova-version: 10.0.0
 
     - name: Build
+      working-directory: ./AppMobile
       run: |
-        ionic cordova build android --debug
+        ionic cordova build android --prod
