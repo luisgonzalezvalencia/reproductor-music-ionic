@@ -5,9 +5,9 @@ name: CI-AppMobile
 
 on:
   push:
-    branches: [master,AppMobile]
+    branches: [AppMobile]
   pull_request:
-    branches: [master,AppMobile]
+    branches: [AppMobile]
 
 jobs:
   build:
