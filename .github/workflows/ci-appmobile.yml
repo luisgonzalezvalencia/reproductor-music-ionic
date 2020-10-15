@@ -23,9 +23,9 @@ jobs:
     - name: Use coturiv/setup-ionic
       uses: coturiv/setup-ionic@v1.0.3
       with:
-        cordova-version: 8
+        cordova-version: 6.9.3
 
     - name: Build
       working-directory: ./AppMobile
       run: |
-        ionic cordova build android --debug
+        ionic cordova build android --prod
