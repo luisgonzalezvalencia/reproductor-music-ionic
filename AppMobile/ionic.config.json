@@ -1,0 +1,7 @@
+{
+  "name": "musicBotUCP",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
