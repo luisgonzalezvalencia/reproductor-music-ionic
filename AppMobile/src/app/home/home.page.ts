@@ -55,7 +55,7 @@ export class HomePage {
   upNextSubtitle;
   buscar: string;
   showSplash = false;
-
+  contador = 0;
   constructor(private streamingMedia: StreamingMedia,
     public toastController: ToastController,
     private getServices: GetService
@@ -66,10 +66,20 @@ export class HomePage {
   ejecutarComando(comando) {
     this.showSplash = true;
     let busqueda = this.buscar;
+
+
     this.getServices.comando(comando, busqueda).then((data: any) => {
       if (comando == "play") {
         if (data.length > 0) {
-          this.songs = data;
+          if (DEBUG) {
+            if (this.contador == data.length) {
+              this.contador = 0;
+            }
+            this.songs.push(data[this.contador]);
+            this.contador = this.contador + 1;
+          } else {
+            this.songs = data;
+          }
           if (!this.isPlaying) {
             this.playMusicVideo(this.songs[0]);
           }
@@ -90,10 +100,15 @@ export class HomePage {
     } else {
       this.minimize();
       this.cancel();
-      let vid= music.path.split("v=")[1].split("&")[0];
+      let vid = music.path.split("v=")[1].split("&")[0];
       console.log(vid);
       this.streamVideo(vid);
     }
+  }
+
+  deleteMusic(music) {
+    var index = this.songs.findIndex(x => x.title == music.title);
+    this.songs.splice(index, 1);
   }
 
   async streamVideo(vid: any) {
@@ -200,14 +215,17 @@ export class HomePage {
   playNext() {
     //get current song index
     var index = this.songs.findIndex(x => x.title == this.currTitle);
+    var _this = this;
+    //delete music index from songs
+    this.songs.splice(index, 1);
     //if current song is last then play firts song
-    if ((index + 1) == this.songs.length) {
-      this.playMusicVideo(this.songs[0]);
+    if ((index + 1) == _this.songs.length) {
+      this.playMusicVideo(_this.songs[0]);
       // this.playSong(this.songs[0].title, this.songs[0].subtitle, this.songs[0].img, this.songs[0].path);
     }//else play next song
     else {
       var nextIndex = index + 1;
-      this.playMusicVideo(this.songs[nextIndex]);
+      this.playMusicVideo(_this.songs[nextIndex]);
       // this.playSong(this.songs[nextIndex].title, this.songs[nextIndex].subtitle, this.songs[nextIndex].img, this.songs[nextIndex].path);
     }
 

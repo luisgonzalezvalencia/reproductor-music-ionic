@@ -25,7 +25,9 @@
   <ion-list-header>
     <ion-label>Canciones</ion-label>
   </ion-list-header>
+  
   <div *ngFor="let song of songs">
+    <ion-item-sliding>
     <ion-item lines="none" 
       (click)="playMusicVideo(song)">
       <ion-thumbnail slot="start">
@@ -37,6 +39,10 @@
       </ion-label>
 
     </ion-item>
+    <ion-item-options side="end">
+      <ion-item-option color="danger" (click)="deleteMusic(song)">Eliminar</ion-item-option>
+    </ion-item-options>
+    </ion-item-sliding>
   </div>
 </ion-content>
 
@@ -97,7 +103,7 @@
   </ion-button>
 
   <!-- play previous button -->
-  <ion-button fill="clear" mode="ios" (click)="playPrev()">
+  <ion-button fill="clear" mode="ios" (click)="playNext()">
     <ion-icon name="play-skip-forward-outline" style="font-size: 30px"></ion-icon>
   </ion-button>
 
