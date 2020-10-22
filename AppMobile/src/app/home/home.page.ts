@@ -2,6 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import { IonRange, ToastController } from '@ionic/angular';
 import * as yt from 'ionic-youtube-streams';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
+import { GetService } from '../services/get-services'
+import { URL_SERVICES, DEBUG, VERSION_APP } from '../config/config';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -10,22 +13,24 @@ import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-m
 export class HomePage {
   @ViewChild("range", { static: false }) range: IonRange;
 
-  songs = [
-    {
-      title: "Believer",
-      subtitle: "Imagine Dragons",
-      img: "https://youtuberancia.com/wp-content/uploads/2019/11/beliver.jpg",
-      path: "https://mus1.djxd.tk/mp3/f5de1900-6884-4bd8-8241-58ccab381e4e.mp3",
-      type: "mp3"
-    },
-    {
-      title: "Wanderwall",
-      subtitle: "Oasis",
-      img: "https://slm-assets.secondlife.com/assets/22131711/view_large/8fbfeb.jpg?1542279718",
-      path: "https://www.youtube.com/watch?v=RcDjZWQaONg",
-      type: "youtube"
-    }
-  ]
+  // songs = [
+  //   {
+  //     title: "Believer",
+  //     subtitle: "Imagine Dragons",
+  //     img: "https://youtuberancia.com/wp-content/uploads/2019/11/beliver.jpg",
+  //     path: "https://mus1.djxd.tk/mp3/f5de1900-6884-4bd8-8241-58ccab381e4e.mp3",
+  //     type: "mp3"
+  //   },
+  //   {
+  //     title: "Wanderwall",
+  //     subtitle: "Oasis",
+  //     img: "https://slm-assets.secondlife.com/assets/22131711/view_large/8fbfeb.jpg?1542279718",
+  //     path: "https://www.youtube.com/watch?v=RcDjZWQaONg",
+  //     type: "youtube"
+  //   }
+  // ]
+
+  songs = [];
 
   currTitle;
   currSubtitle;
@@ -48,11 +53,48 @@ export class HomePage {
   upNextImg;
   upNextTitle;
   upNextSubtitle;
-
+  buscar: string;
+  showSplash = false;
 
   constructor(private streamingMedia: StreamingMedia,
-    public toastController: ToastController
-  ) { }
+    public toastController: ToastController,
+    private getServices: GetService
+  ) {
+    // this.ejecutarComando("play");
+  }
+
+  ejecutarComando(comando) {
+    this.showSplash = true;
+    let busqueda = this.buscar;
+    this.getServices.comando(comando, busqueda).then((data: any) => {
+      if (comando == "play") {
+        if (data.length > 0) {
+          this.songs = data;
+          if (!this.isPlaying) {
+            this.playMusicVideo(this.songs[0]);
+          }
+          console.log(this.songs);
+        }
+      }
+      this.showSplash = false;
+    }).catch((reason: any) => {
+      console.log(reason);
+      this.showSplash = false;
+    })
+  }
+
+
+  playMusicVideo(music) {
+    if (music.type == "mp3") {
+      this.playSong(music.title, music.subtitle, music.img, music.path);
+    } else {
+      this.minimize();
+      this.cancel();
+      let vid= music.path.split("v=")[1].split("&")[0];
+      console.log(vid);
+      this.streamVideo(vid);
+    }
+  }
 
   async streamVideo(vid: any) {
     vid = "RcDjZWQaONg";
@@ -160,11 +202,13 @@ export class HomePage {
     var index = this.songs.findIndex(x => x.title == this.currTitle);
     //if current song is last then play firts song
     if ((index + 1) == this.songs.length) {
-      this.playSong(this.songs[0].title, this.songs[0].subtitle, this.songs[0].img, this.songs[0].path);
+      this.playMusicVideo(this.songs[0]);
+      // this.playSong(this.songs[0].title, this.songs[0].subtitle, this.songs[0].img, this.songs[0].path);
     }//else play next song
     else {
       var nextIndex = index + 1;
-      this.playSong(this.songs[nextIndex].title, this.songs[nextIndex].subtitle, this.songs[nextIndex].img, this.songs[nextIndex].path);
+      this.playMusicVideo(this.songs[nextIndex]);
+      // this.playSong(this.songs[nextIndex].title, this.songs[nextIndex].subtitle, this.songs[nextIndex].img, this.songs[nextIndex].path);
     }
 
 
@@ -176,11 +220,13 @@ export class HomePage {
     //if current song is last then play firts song
     if (index == 0) {
       var lastIndex = this.songs.length - 1;
-      this.playSong(this.songs[lastIndex].title, this.songs[lastIndex].subtitle, this.songs[lastIndex].img, this.songs[lastIndex].path);
+      this.playMusicVideo(this.songs[lastIndex]);
+      // this.playSong(this.songs[lastIndex].title, this.songs[lastIndex].subtitle, this.songs[lastIndex].img, this.songs[lastIndex].path);
     }//else play next song
     else {
       var prevIndex = index - 1;
-      this.playSong(this.songs[prevIndex].title, this.songs[prevIndex].subtitle, this.songs[prevIndex].img, this.songs[prevIndex].path);
+      this.playMusicVideo(this.songs[prevIndex]);
+      // this.playSong(this.songs[prevIndex].title, this.songs[prevIndex].subtitle, this.songs[prevIndex].img, this.songs[prevIndex].path);
     }
 
 

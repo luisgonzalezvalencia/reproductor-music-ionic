@@ -1,3 +1,17 @@
+<div class="splashOpaque" *ngIf="showSplash">
+  <div class="sk-cube-grid">
+    <div class="sk-cube sk-cube1"></div>
+    <div class="sk-cube sk-cube2"></div>
+    <div class="sk-cube sk-cube3"></div>
+    <div class="sk-cube sk-cube4"></div>
+    <div class="sk-cube sk-cube5"></div>
+    <div class="sk-cube sk-cube6"></div>
+    <div class="sk-cube sk-cube7"></div>
+    <div class="sk-cube sk-cube8"></div>
+    <div class="sk-cube sk-cube9"></div>
+  </div>
+</div>
+
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
@@ -7,27 +21,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar placeholder="Búsqueda..."></ion-searchbar>
+  <ion-searchbar  [(ngModel)]="buscar" (search)="ejecutarComando('play')" placeholder="Búsqueda..."></ion-searchbar>
   <ion-list-header>
     <ion-label>Canciones</ion-label>
   </ion-list-header>
   <div *ngFor="let song of songs">
-    <ion-item lines="none"  *ngIf="song.type=='mp3'"
-      (click)="playSong(song.title, song.subtitle, song.img, song.path)">
-      <ion-thumbnail slot="start">
-        <img src="{{song.img}}">
-      </ion-thumbnail>
-      <ion-label>
-        <h2>{{song.title}}</h2>
-        <p>{{song.subtitle}}</p>
-      </ion-label>
-
-    </ion-item>
-  </div>
-  <!-- para videos de youtube -->
-  <div *ngFor="let song of songs">
-    <ion-item lines="none"  *ngIf="song.type=='youtube'"
-      (click)="streamVideo(song.path)">
+    <ion-item lines="none" 
+      (click)="playMusicVideo(song)">
       <ion-thumbnail slot="start">
         <img src="{{song.img}}">
       </ion-thumbnail>
