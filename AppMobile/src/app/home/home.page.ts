@@ -112,7 +112,6 @@ export class HomePage {
   }
 
   async streamVideo(vid: any) {
-    vid = "RcDjZWQaONg";
     const info: any = await yt.info(vid);
     this.streamUrl(info.formats[0].url);
   }
@@ -125,10 +124,10 @@ export class HomePage {
       errorCallback: (e) => {
         console.log(e);
       },
-      orientation: 'portrait',
+      orientation: 'landscape', //portrait
       shouldAutoClose: true,
       controls: true
-    };
+    };    
     this.streamingMedia.playVideo(url, options);
   }
 
