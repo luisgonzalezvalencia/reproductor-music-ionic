@@ -94,7 +94,7 @@ export class HomePage {
   }
 
 
-  playMusicVideo(music) {
+  async playMusicVideo(music) {
     if (music.type == "mp3") {
       this.playSong(music.title, music.subtitle, music.img, music.path);
     } else {
@@ -102,7 +102,7 @@ export class HomePage {
       this.cancel();
       let vid = music.path.split("v=")[1].split("&")[0];
       console.log(vid);
-      this.streamVideo(vid);
+      await this.streamVideo(vid);
     }
   }
 
