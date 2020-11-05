@@ -37,7 +37,7 @@
         <h2>{{song.title}}</h2>
         <p>{{song.subtitle}}</p>
       </ion-label>
-
+      <ion-badge slot="end">{{song.type}}</ion-badge>
     </ion-item>
     <ion-item-options side="end">
       <ion-item-option color="danger" (click)="deleteMusic(song)">Eliminar</ion-item-option>
@@ -59,7 +59,10 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-
+<div *ngIf="type=='youtube'">
+  <iframe width="560" height="315" [src]="videoid | youtube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <!-- <iframe width="100%" height="100%" [src]="videoid | youtube" frameborder="0" allow="autoplay" encrypted-media allowfullscree></iframe> -->
+</div>
   <img src="{{currImage}}" alt="" id="currImg">
   <h2>{{currTitle}}</h2>
   <p>

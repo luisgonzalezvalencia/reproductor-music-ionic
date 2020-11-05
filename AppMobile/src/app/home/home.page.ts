@@ -51,7 +51,8 @@ export class HomePage {
   maxRangeValue;
 
   currSong: HTMLAudioElement;
-
+  type: string;
+  videoid: string;
   upNextImg;
   upNextTitle;
   upNextSubtitle;
@@ -100,13 +101,17 @@ export class HomePage {
 
   async playMusicVideo(music) {
     if (music.type == "mp3") {
+      this.type = "mp3";
       this.playSong(music.title, music.subtitle, music.img, music.path);
     } else {
       this.minimize();
       this.cancel();
       let vid = music.path.split("v=")[1].split("&")[0];
       console.log(vid);
-      await this.streamVideo(vid);
+      this.videoid = vid;
+      this.type = "youtube";
+      // this.playSong(music.title, music.subtitle, music.img, music.path);
+      this.streamVideo(vid);
     }
   }
 
@@ -118,29 +123,24 @@ export class HomePage {
   async streamVideo(vid: any) {
     // const info: any = await yt.info(vid);
     // this.streamUrl(info.formats[0].url);
+    this.isPlaying = true;
     this.youtube.openVideo(vid);
+    console.log("Se cerró");
   }
 
   streamUrl(url: any) {
-    // const options: StreamingVideoOptions = {
-    //   successCallback: () => {
-
-    //   },
-    //   errorCallback: (e) => {
-    //     console.log("ERROR YOUTUBE: " + e);
-    //     this.toastService.presentToast(e, 2000);
-    //   },
-    //   orientation: 'landscape', //portrait
-    //   shouldAutoClose: true,
-    //   controls: true
-    // };
-    let options: StreamingVideoOptions = {
-      successCallback: () => { console.log('Video played') },
-      errorCallback: (e) => { console.log('Error streaming') },
-      orientation: 'landscape',
+    const options: StreamingVideoOptions = {
+      successCallback: () => {
+        console.log("Volviendo del video");
+      },
+      errorCallback: (e) => {
+        console.log("ERROR streaming: ");
+      },
+      orientation: 'portrait', //portrait
       shouldAutoClose: true,
-      controls: false
+      controls: true
     };
+
     this.streamingMedia.playVideo(url, options);
   }
 
@@ -228,8 +228,7 @@ export class HomePage {
     //get current song index
     var index = this.songs.findIndex(x => x.title == this.currTitle);
     var _this = this;
-    //delete music index from songs
-    this.songs.splice(index, 1);
+
     //if current song is last then play firts song
     if ((index + 1) == _this.songs.length) {
       this.playMusicVideo(_this.songs[0]);
@@ -240,6 +239,9 @@ export class HomePage {
       this.playMusicVideo(_this.songs[nextIndex]);
       // this.playSong(this.songs[nextIndex].title, this.songs[nextIndex].subtitle, this.songs[nextIndex].img, this.songs[nextIndex].path);
     }
+
+    //delete music index from songs
+    this.songs.splice(index, 1);
 
 
   }
@@ -319,6 +321,10 @@ export class HomePage {
     if (this.isPlaying) {
       this.currSong.play();
     }
+  }
+
+  ionViewDidEnter() {
+    console.log("se cerro el video o entro de nuevo");
   }
 
 }
