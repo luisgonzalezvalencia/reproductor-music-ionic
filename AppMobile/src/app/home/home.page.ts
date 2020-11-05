@@ -123,7 +123,7 @@ export class HomePage {
   async streamVideo(vid: any) {
     // const info: any = await yt.info(vid);
     // this.streamUrl(info.formats[0].url);
-    this.isPlaying = true;
+    // this.isPlaying = true;
     this.youtube.openVideo(vid);
     console.log("Se cerró");
   }
