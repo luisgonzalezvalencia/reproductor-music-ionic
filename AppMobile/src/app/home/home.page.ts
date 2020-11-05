@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonRange, ToastController } from '@ionic/angular';
 import * as yt from 'ionic-youtube-streams';
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { GetService } from '../services/get-services'
 import { URL_SERVICES, DEBUG, VERSION_APP } from '../config/config';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-home',
@@ -58,7 +60,9 @@ export class HomePage {
   contador = 0;
   constructor(private streamingMedia: StreamingMedia,
     public toastController: ToastController,
-    private getServices: GetService
+    private toastService: ToastService,
+    private getServices: GetService,
+    private youtube: YoutubeVideoPlayer
   ) {
     // this.ejecutarComando("play");
   }
@@ -112,22 +116,31 @@ export class HomePage {
   }
 
   async streamVideo(vid: any) {
-    const info: any = await yt.info(vid);
-    this.streamUrl(info.formats[0].url);
+    // const info: any = await yt.info(vid);
+    // this.streamUrl(info.formats[0].url);
+    this.youtube.openVideo(vid);
   }
 
   streamUrl(url: any) {
-    const options: StreamingVideoOptions = {
-      successCallback: () => {
+    // const options: StreamingVideoOptions = {
+    //   successCallback: () => {
 
-      },
-      errorCallback: (e) => {
-        console.log(e);
-      },
-      orientation: 'landscape', //portrait
+    //   },
+    //   errorCallback: (e) => {
+    //     console.log("ERROR YOUTUBE: " + e);
+    //     this.toastService.presentToast(e, 2000);
+    //   },
+    //   orientation: 'landscape', //portrait
+    //   shouldAutoClose: true,
+    //   controls: true
+    // };
+    let options: StreamingVideoOptions = {
+      successCallback: () => { console.log('Video played') },
+      errorCallback: (e) => { console.log('Error streaming') },
+      orientation: 'landscape',
       shouldAutoClose: true,
-      controls: true
-    };    
+      controls: false
+    };
     this.streamingMedia.playVideo(url, options);
   }
 
@@ -277,7 +290,9 @@ export class HomePage {
     this.currTitle = "";
     this.currSubtitle = "";
     this.progress = 0;
-    this.currSong.pause();
+    if (this.isPlaying) {
+      this.currSong.pause();
+    }
     this.isPlaying = false;
   }
 
