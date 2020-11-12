@@ -13,8 +13,6 @@ export class GetService {
     private toastServ: ToastService) {
   }
 
-
-
   httpGet(url) {
     let promesa = new Promise((resolve) => {
       this.http.get(url)

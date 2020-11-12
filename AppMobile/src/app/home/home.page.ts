@@ -59,6 +59,7 @@ export class HomePage {
   buscar: string;
   showSplash = false;
   contador = 0;
+  reproduceAutomatic: boolean = true;
   constructor(private streamingMedia: StreamingMedia,
     public toastController: ToastController,
     private toastService: ToastService,
@@ -85,7 +86,7 @@ export class HomePage {
           } else {
             this.songs = data;
           }
-          if (!this.isPlaying) {
+          if (!this.isPlaying && this.reproduceAutomatic) {
             this.playMusicVideo(this.songs[0]);
           }
           console.log(this.songs);
@@ -112,6 +113,7 @@ export class HomePage {
       this.type = "youtube";
       // this.playSong(music.title, music.subtitle, music.img, music.path);
       this.streamVideo(vid);
+      this.deleteMusic(music);
     }
   }
 

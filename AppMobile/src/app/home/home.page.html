@@ -24,7 +24,10 @@
   <ion-searchbar  [(ngModel)]="buscar" (search)="ejecutarComando('play')" placeholder="Búsqueda..."></ion-searchbar>
   <ion-list-header>
     <ion-label>Canciones</ion-label>
+    Reproducción Automática
+    <ion-toggle [(ngModel)]="reproduceAutomatic"> </ion-toggle>
   </ion-list-header>
+  
   
   <div *ngFor="let song of songs">
     <ion-item-sliding>
