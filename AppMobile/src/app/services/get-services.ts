@@ -27,11 +27,39 @@ export class GetService {
     return promesa
   }
 
+  httpPost(data, url) {
+    let promesa = new Promise((resolve,) => {
+      this.http.post(url, JSON.stringify(data), { headers: { 'Content-Type': "application/json" } })
+        .subscribe((data: any) => {
+          resolve(data)
+        },
+          (error) => {
+            this.toastServ.toastMensajeDelServidor('Hubo un timeout con el servidor, revise su conexión a internet e inténtelo nuevamente');
+          })
+    })
+    return promesa
+  }
+
+
   comando(comando, busqueda) {
     let promesa = new Promise((resolve) => {
       let url = URL_SERVICES + '/musica?comando=' + comando + '&search=' + busqueda;
       this.httpGet(url).then((data) => {
         resolve(data);
+      })
+    })
+    return promesa
+  }
+
+  comandoPost(comando, busqueda) {
+    let promesa = new Promise((resolve) => {
+      let url = URL_SERVICES + '/search';
+      let data = {
+        "song": busqueda
+      }
+
+      this.httpPost(data, url).then((data) => {
+        resolve(data)
       })
     })
     return promesa
