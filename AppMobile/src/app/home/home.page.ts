@@ -118,6 +118,7 @@ export class HomePage {
       this.deleteMusic(music);
     } else {
       this.minimize();
+      this.cancel();
       const browser = this.iab.create(music.path, '_blank', 'location=yes');
       this.deleteMusic(music);
     }
