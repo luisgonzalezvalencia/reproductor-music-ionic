@@ -6,6 +6,7 @@ import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-m
 import { GetService } from '../services/get-services'
 import { URL_SERVICES, DEBUG, VERSION_APP } from '../config/config';
 import { ToastService } from '../services/toast.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-home',
@@ -64,7 +65,8 @@ export class HomePage {
     public toastController: ToastController,
     private toastService: ToastService,
     private getServices: GetService,
-    private youtube: YoutubeVideoPlayer
+    private youtube: YoutubeVideoPlayer,
+    private iab: InAppBrowser
   ) {
     // this.ejecutarComando("play");
   }
@@ -104,7 +106,7 @@ export class HomePage {
     if (music.type == "mp3") {
       this.type = "mp3";
       this.playSong(music.title, music.subtitle, music.img, music.path);
-    } else {
+    } else if (music.type == "youtube") {
       this.minimize();
       this.cancel();
       let vid = music.path.split("v=")[1].split("&")[0];
@@ -113,6 +115,10 @@ export class HomePage {
       this.type = "youtube";
       // this.playSong(music.title, music.subtitle, music.img, music.path);
       this.streamVideo(vid);
+      this.deleteMusic(music);
+    } else {
+      this.minimize();
+      const browser = this.iab.create(music.path, '_blank', 'location=yes');
       this.deleteMusic(music);
     }
   }

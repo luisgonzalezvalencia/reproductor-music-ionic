@@ -43,7 +43,7 @@ export class GetService {
 
   comando(comando, busqueda) {
     let promesa = new Promise((resolve) => {
-      let url = URL_SERVICES + '/musica?comando=' + comando + '&search=' + busqueda;
+      let url = URL_SERVICES + '/musica2?comando=' + comando + '&search=' + busqueda;
       this.httpGet(url).then((data) => {
         resolve(data);
       })

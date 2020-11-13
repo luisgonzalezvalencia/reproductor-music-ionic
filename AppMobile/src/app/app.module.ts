@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { StreamingMedia } from '@ionic-native/streaming-media/ngx';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
-
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,9 +19,10 @@ import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
     StatusBar,
     SplashScreen,
     YoutubeVideoPlayer,
+    InAppBrowser,
     StreamingMedia,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

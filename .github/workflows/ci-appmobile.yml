@@ -33,4 +33,4 @@ jobs:
     - name: Push on Diawi
       working-directory: ./AppMobile/platforms/android/app/build/outputs/apk/debug
       run: |
-        curl https://upload.diawi.com/ -F token='HU1SvdGMgjWYfF6joGCGnW7YKCSpevae4UW4RaE5tQ' -F file=@app-debug.apk -F callback_emails='luichigenio@gmail.com'
+        curl https://upload.diawi.com/ -F token='HU1SvdGMgjWYfF6joGCGnW7YKCSpevae4UW4RaE5tQ' -F file=@app-debug.apk -F callback_emails='luichigenio@gmail.com, julianraso@live.com, eliasmachuanin@gmail.com, fernandezja@gmail.com'
