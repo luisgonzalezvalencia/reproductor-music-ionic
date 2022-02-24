@@ -9,5 +9,3 @@
 ### Descripcion:
 npm update
 ionic serve to view in navigator
-### Planificacion:
-Aqui va la planificacion
